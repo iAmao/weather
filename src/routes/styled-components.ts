@@ -9,4 +9,5 @@ export const MainContentContainer = styled.div`
 	max-height: calc(100vh - 50px);
 	overflow-y: auto;
 	overflow-x: hidden;
+	background-color: #f9f9f9;
 `;
