@@ -12,7 +12,7 @@ const weatherReducer = wrapReducer<WeatherState>(
     },
     [actionTypes.FETCH_CITY_WEATHER__SUCCESS]: (draft, { response }, pendingPayload) => {
       draft.loading = false;
-      if (pendingPayload) {
+      if (pendingPayload && response) {
         const { query } = pendingPayload;
         draft.weather[query] = response;
         draft.weather[query].note = '';
@@ -50,6 +50,20 @@ const weatherReducer = wrapReducer<WeatherState>(
     [actionTypes.REMOVE_NOTE_FROM_WEATHER]: (draft, { key }) => {
       if (draft.weather[key]) {
         draft.weather[key].note = '';
+      }
+    },
+    [actionTypes.FETCH_CITY_POSTER__SUCCESS]: (
+      draft,
+      { response },
+      pendingPayload,
+    ) => {
+      console.log(response)
+      if (pendingPayload && response && response.hits) {
+        const { key } = pendingPayload;
+        const [result] = response.hits;
+        draft.weather[key].poster = result
+          ? result.imageURL || result.webformatURL
+          : null;
       }
     }
   },

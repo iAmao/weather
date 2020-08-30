@@ -25,7 +25,7 @@ const TopNav: React.FC<TopNavProps> = (props) => {
 		<TopNavContainer>
 			<div />
 			<div>
-				<input value={value} onChange={handleChange} />
+				<input value={value} onChange={handleChange} placeholder="Search..." />
 				<Button variant="primary" onClick={handleSearch}>Search</Button>
 			</div>
 		</TopNavContainer>

@@ -8,7 +8,7 @@ import { GenericObject } from '../../types';
 
 export function* fetchCitiesSaga() {
   const Api = new CustomAxios('https://wft-geo-db.p.rapidapi.com/v1');
-  Api.setHeader('x-rapidapi-key', '5d9166b6c0msh2923d5063dabc5fp169609jsn5e4f4080ac1d');
+  Api.setHeader('x-rapidapi-key', process.env.REACT_APP__GEO_API || '');
   Api.setHeader('useQueryString', 'true');
   const asyncSaga = createAsyncSaga(
     actionTypes.FETCH_CITIES__SUCCESS,

@@ -20,6 +20,7 @@ import {
 } from '../../store/weather/actions';
 import {
 	Weather,
+	WeatherState,
 	GetCityWeatherAction,
 	AddNoteToWeatherAction,
 	RemoveNoteFromWeatherAction,
@@ -92,8 +93,9 @@ class City extends React.Component<CityPageProps> {
 }
 
 const mapStateToProps = (
-	{ weather }: any,
-	ownProps: CityPageProps) => {
+	{ weather }: { weather: WeatherState },
+	ownProps: CityPageProps,
+) => {
 	const key = ownProps.match.params.id
 	const cityWeather = weather.weather[key] || {};
 	const location = cityWeather.location || {}

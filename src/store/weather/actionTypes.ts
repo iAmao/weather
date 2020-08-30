@@ -8,6 +8,8 @@ const asyncActionTypes = createActionTypes([
 	'REMOVE_WEATHER_FROM_FAVORITES',
 	'ADD_NOTE_TO_WEATHER',
 	'REMOVE_NOTE_FROM_WEATHER',
+	'UPDATE_CITY_WEATHER_POSTER',
+	'FETCH_CITY_POSTER',
 ], true);
 
 export default {

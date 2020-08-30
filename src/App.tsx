@@ -12,12 +12,11 @@ const GlobalStyles = createGlobalStyle`
     overflow: hidden;
     background-color: ${props => props.theme.mode === 'dark' ? 'red' : '#FFF'};
   }
-`
+`;
 
 const { store, persistor } = configureStore();
 
 function App() {
-  console.log(store);
   const [theme] = React.useState(lightTheme);
   return (
     <Provider store={store}>

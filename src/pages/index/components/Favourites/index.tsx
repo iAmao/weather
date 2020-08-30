@@ -1,63 +1,67 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import {
+	FavoritesContainer,
+	StyledFavoriteCard,
+	StyledFavoriteCardName,
+	StyledFavoriteCardPoster,
+	StyledFavoriteCardPosterTemperature,
+} from './styled-components';
 
+// const FavoritesContainer = styled.div`
+// 	margin: 50px auto;
+// 	display: grid;
+// 	grid-gap: 20px;
+// 	padding: 0 50px;
+// 	max-width: 600px;
+// 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+// `;
 
-const FavoritesContainer = styled.div`
-	margin-top: 50px;
-	display: grid;
-	grid-gap: 20px;
-	padding: 0 50px;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-`;
-
-const StyledFavoriteCard = styled.div`
-	border-radius: 10px;
-	background-color: white;
-
-	&>div {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	&>div:first-child {
-		border-bottom: 1px solid #efefef;
-		height: 40px;
-		padding: 10px 0;
-
-		h3 {
-			text-align: center;
-			margin: 0;
-			font-size: 0.8rem;
-		}
-	}
-`;
-
-interface FavoriteCardProps {
+export interface FavoriteCardProps {
+	id: string;
 	name: string;
-	temp: string;
+	country: string;
+	poster?: string;
+	temperature: string;
 };
 
-const FavoriteCard = ({ name, temp }: FavoriteCardProps) => {
+const FavoriteCard: React.FC<FavoriteCardProps> = ({ id, country, name, temperature, poster }) => {
+	const displayName = `${name}, ${country}`;
 	return (
 		<StyledFavoriteCard>
-			<div>
-				<h3>{name}</h3>
-			</div>
-			<div><h2>{temp}&deg;C</h2></div>
+			<StyledFavoriteCardPoster>
+				{/*<img src="https://images.unsplash.com/photo-1583847513358-8151ff4805b6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" alt={displayName} />*/}
+				{poster && <img src={poster} alt={displayName} />}
+				<StyledFavoriteCardPosterTemperature>
+					<h2>{temperature}&deg;C</h2>
+				</StyledFavoriteCardPosterTemperature>
+			</StyledFavoriteCardPoster>
+			<StyledFavoriteCardName>
+				<h3>{displayName}</h3>
+			</StyledFavoriteCardName>
+			<Link to={`/city/${id}`} />
 		</StyledFavoriteCard>
 	);
 }
 
 const Favorites: React.FC<FavoritesProps> = (props) => {
-	return <FavoritesContainer>
-		{props.favourites.map((weather) => {
-			return <FavoriteCard name={weather.name} temp={weather.temperature} />
-		})}
-	</FavoritesContainer>
-}
+	return (
+		<FavoritesContainer>
+			{props.favourites.map((weather) => {
+				return <FavoriteCard
+					id={weather.id}
+					key={weather.id}
+					name={weather.name}
+					poster={weather.poster}
+					country={weather.country}
+					temperature={weather.temperature}
+				/>
+			})}
+		</FavoritesContainer>
+	);
+};
 
 export interface FavoritesProps {
-	favourites: any[]
-}
+	favourites: Array<FavoriteCardProps>;
+};
 export default Favorites;

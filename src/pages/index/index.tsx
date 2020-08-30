@@ -11,6 +11,7 @@ import {
 	FetchCitiesByPopulationAction
 } from '../../store/city/types';
 import { CityState } from '../../store/city/initialState';
+import { WeatherState } from '../../store/weather/types';
 
 class IndexPage extends React.Component<IndexPageProps> {
 	componentDidMount() {
@@ -28,12 +29,18 @@ class IndexPage extends React.Component<IndexPageProps> {
 
 	getFavourites = () => {
 		const { weather } = this.props;
-		return weather.favourites.map((city: string) => {
-			return {
-				...weather.weather[city].current,
-				...weather.weather[city].location
-			};
-		})
+		return weather.favourites
+			.slice(0, 3)
+			.map((city: string) => {
+				const { location, current, poster } = weather.weather[city];
+				return {
+					poster,
+					id: city,
+					name: location.name,
+					country: location.country,
+					temperature: current.temperature,
+				};
+			});
 	}
 
 	handleDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,14 +65,11 @@ export interface IndexPageProps {
 	removeCity: RemoveCityAction,
 	fetchCitiesByPopulation: FetchCitiesByPopulationAction,
 	city: CityState,
-	weather: any;
+	weather: WeatherState;
 };
 
-const mapStateToProps = ({ city, weather }: { city: CityState, weather: any }) => {
-	return {
-		city,
-		weather
-	};
+const mapStateToProps = ({ city, weather }: { city: CityState, weather: WeatherState }) => {
+	return { city, weather };
 };
 
 const mapDispatchToProps = {

@@ -23,10 +23,14 @@ const NoteContainer = styled.div`
 	justify-self: center;
 
 	&>textarea {
-		width: 100%;
+		width: calc(100% - 20px);
 		border: 1px solid #efefef;
 		padding: 10px;
 	}
+`;
+
+const ContentArea = styled.div`
+	padding-top: 50px;
 `;
 
 
@@ -52,7 +56,10 @@ const Notes: React.FC<NotesProps> = (props) => {
 		<NoteContainer>
 			{editMode
 					? <textarea value={content} onChange={handleChange} placeholder="Add a note"/>
-					: <div>{content}</div>
+					: <ContentArea>
+							<strong>Notes</strong><br/><br/>
+							{content}
+						</ContentArea>
 			}
 			{
 				editMode

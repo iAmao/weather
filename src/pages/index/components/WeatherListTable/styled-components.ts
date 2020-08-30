@@ -14,7 +14,7 @@ export interface TableDataProps {
 	small?: boolean;
 }
 export const TableData = styled.td<TableDataProps>`
-	padding: 1.8rem 1.2rem;
+	padding: 1.2rem 1.2rem;
 	font-size: ${props => (
 		props.small ? '0.7rem': '1rem'
 	)};

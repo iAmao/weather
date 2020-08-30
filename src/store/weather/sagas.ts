@@ -13,7 +13,7 @@ export function* fetchMultiplWeather() {
     function ({ payload }) {
       const [city] = payload.query;
       const query: GenericObject<string> = {
-        access_key: '4a4cfb561bf6af41a7f8b058bd783046',
+        access_key: process.env.REACT_APP__WEATHER_API || '',
         query: city,
       };
 
@@ -53,7 +53,7 @@ export function* fetchWeatherSaga() {
 
       if (!payload.expiresAfter || time > payload.expiresAfter) {
         const query: GenericObject<string> = {
-          access_key: '4a4cfb561bf6af41a7f8b058bd783046',
+          access_key: process.env.REACT_APP__WEATHER_API || '',
           query: payload.query,
         };
         const uri = `/current?${queryString.stringify(query)}`;
@@ -72,7 +72,7 @@ export function* addWeatherToFavoritesSaga () {
     actionTypes.ADD_WEATHER_TO_FAVORITES__FAILED,
     ({ payload }) => {
       const query: GenericObject<string> = {
-        access_key: '4a4cfb561bf6af41a7f8b058bd783046',
+        access_key: process.env.REACT_APP__WEATHER_API || '',
         query: payload.key,
       };
       const uri = `/current?${queryString.stringify(query)}`;
@@ -82,11 +82,52 @@ export function* addWeatherToFavoritesSaga () {
   yield takeEvery(actionTypes.ADD_WEATHER_TO_FAVORITES__PENDING, asyncSaga);
 }
 
+export function* updateCityWeatherPoster() {
+  yield takeEvery(
+    actionTypes.ADD_WEATHER_TO_FAVORITES__SUCCESS,
+    function* ({ payload, pendingPayload }: any) {
+      if (payload.response) {
+        const { name, country } = payload.response.location;
+        yield put({
+          type: actionTypes.FETCH_CITY_POSTER__PENDING,
+          payload: {
+            key: pendingPayload.key,
+            query: `${name},${country},city`,
+          }
+        });
+      }
+  });
+}
+
+export function* fetchCityPosterSaga() {
+  const Api = new CustomAxios('https://pixabay.com/api');
+  const asyncSaga = createAsyncSaga(
+    actionTypes.FETCH_CITY_POSTER__SUCCESS,
+    actionTypes.FETCH_CITY_POSTER__FAILED,
+    ({ payload }) => {
+      const query: GenericObject<string> = {
+        q: payload.query,
+        page: '1',
+        key: process.env.REACT_APP__IMG_API || '',
+        image_type: 'photo',
+      };
+      const uri = `/?${queryString.stringify(query)}`;
+      return call(Api.get, uri);
+    },
+  );
+  yield takeEvery(
+    actionTypes.FETCH_CITY_POSTER__PENDING,
+    asyncSaga,
+  );
+}
+
 export default function* citySagas() {
   yield all([
     fetchMultiplWeather(),
     fetchMultipleSuccessSaga(),
     fetchWeatherSaga(),
     addWeatherToFavoritesSaga(),
+    updateCityWeatherPoster(),
+    fetchCityPosterSaga(),
   ]);
 };

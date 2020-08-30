@@ -26,7 +26,7 @@ const WeatherListTable: React.FC<WeatherListTableProps> = ({ cities, onDelete })
 					const weather = getWeatherAlt(city.weather);
 					return <TableRow key={city.id}>
 						<TableData>{city.name}</TableData>
-						<TableData small>{weather.humidity}</TableData>
+						{/*<TableData small>{weather.humidity}</TableData>*/}
 						<TableData small>{weather.description}</TableData>
 						<TableData>
 							<b>{weather.temperature}&deg;C</b>
@@ -36,9 +36,6 @@ const WeatherListTable: React.FC<WeatherListTableProps> = ({ cities, onDelete })
 						</TableData>
 						<TableData>
 							<Link to={`/city/${city.name}`}>More</Link>
-						</TableData>
-						<TableData>
-							<Button variant="primary">Add to Favorites</Button>
 						</TableData>
 						<TableData>
 							<Button

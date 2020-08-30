@@ -34,7 +34,7 @@ export const NavItem = styled.li`
 		}
 
 		&.SideNav-NavLink--active {
-			border-right: 2px solid red;
+			border-right: 2px solid #7209b7;
 		}
 	}
 `;
