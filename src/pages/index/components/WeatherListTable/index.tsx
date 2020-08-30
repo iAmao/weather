@@ -5,7 +5,6 @@ import {
 	TableRow,
 	TableData,
 } from './styled-components';
-import { ReactComponent as StarIcon } from '../../../../components/atoms/Icons/star.svg';
 import Button from '../../../../components/atoms/Button';
 import TemperatureScale from '../../../../components/atoms/TemperatureScale';
 import { City } from '../../../../store/city/initialState';

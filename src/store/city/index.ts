@@ -16,7 +16,6 @@ const cityReducer = wrapReducer<CityState>(
       draft.loading = true;
     },
     [actionTypes.FETCH_CITIES__SUCCESS]: (draft, { response }) => {
-      console.log(response);
     	draft.loading = false;
       if (response && Array.isArray(response.data)) {
         const sortedData = sortResponseData(response.data, 'name', 'asc');

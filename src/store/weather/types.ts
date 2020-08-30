@@ -24,6 +24,7 @@ export interface Weather {
   feelslike: number;
   uv_index: number;
   weather_descriptions: string[];
+  weather_icons: string[];
   expiresAfter?: number;
 }
 

@@ -2,7 +2,7 @@ import { all, call, takeEvery, put } from 'redux-saga/effects';
 import queryString from 'query-string';
 import actionTypes from './actionTypes';
 import weatherActionTypes from '../weather/actionTypes';
-import { CustomAxios, createAsyncSaga, AsyncList } from '../util';
+import { CustomAxios, createAsyncSaga } from '../util';
 import { ActionPayload } from '../types';
 import { GenericObject } from '../../types';
 

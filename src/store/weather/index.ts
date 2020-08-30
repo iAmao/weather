@@ -3,12 +3,7 @@ import getTime from 'date-fns/getTime'
 import actionTypes from './actionTypes';
 import initialWeatherState from './initialState';
 import { WeatherState } from './types';
-import {
-  wrapReducer,
-  normalizeByKey,
-  getAllKeysValue,
-  sortResponseData,
-} from '../util';
+import { wrapReducer } from '../util';
 
 const weatherReducer = wrapReducer<WeatherState>(
   {

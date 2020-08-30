@@ -29,8 +29,8 @@ import {
 
 class City extends React.Component<CityPageProps> {
 	componentDidMount() {
-		const { getCityWeather, match, weather, expiresAfter } = this.props;
-		this.props.getCityWeather(match.params.id, expiresAfter || 0);
+		const { getCityWeather, match, expiresAfter } = this.props;
+		getCityWeather(match.params.id, expiresAfter || 0);
 	}
 
 	handleSaveNote = (content: string) => {
@@ -91,7 +91,9 @@ class City extends React.Component<CityPageProps> {
 	}
 }
 
-const mapStateToProps = ({ weather }: any, ownProps: CityPageProps) => {
+const mapStateToProps = (
+	{ weather }: any,
+	ownProps: CityPageProps) => {
 	const key = ownProps.match.params.id
 	const cityWeather = weather.weather[key] || {};
 	const location = cityWeather.location || {}
@@ -119,7 +121,7 @@ export interface CityPageProps {
 	getCityWeather: GetCityWeatherAction;
 	addWeatherToFavorites: AddWeatherToFavoritesAction;
 	removeWeatherFromFavorites: RemoveWeatherFromFavoritesAction;
-	weather: any;
+	weather: Weather;
 	note: string;
 	expiresAfter: number;
 	match: any;

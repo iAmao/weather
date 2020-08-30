@@ -2,7 +2,6 @@ import { all, call, takeEvery, put } from 'redux-saga/effects';
 import getTime from 'date-fns/getTime'
 import queryString from 'query-string';
 import actionTypes from './actionTypes';
-import cityActionTypes from '../city/actionTypes';
 import { CustomAxios, createAsyncSaga } from '../util';
 import { GenericObject } from '../../types';
 
@@ -12,7 +11,7 @@ export function* fetchMultiplWeather() {
     actionTypes.FETCH_MULTIPLE_WEATHER__SUCCESS,
     actionTypes.FETCH_MULTIPLE_WEATHER__FAILED,
     function ({ payload }) {
-      const [city, ...remainders] = payload.query;
+      const [city] = payload.query;
       const query: GenericObject<string> = {
         access_key: '4a4cfb561bf6af41a7f8b058bd783046',
         query: city,
@@ -36,6 +35,7 @@ export function* fetchMultipleSuccessSaga() {
         payload: {
           query: rest,
           nameToId,
+          lastQuery: first,
         },
       });
     }

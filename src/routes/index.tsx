@@ -16,7 +16,6 @@ import CityPage from '../pages/city';
 // Components
 import TopNav from '../components/molecules/TopNav';
 import SideNav from '../components/molecules/SideNav';
-import PageLayout from '../components/molecules/PageLayout';
 
 const Routes = () => {
 	return (
