@@ -17,3 +17,10 @@ export function fetchCitiesByPopulation(payload: FetchCitiesByPopulationActionPa
 		...payload,
 	});
 };
+
+export function removeCity(id: number) {
+	return {
+		type: actionTypes.REMOVE_CITY,
+		payload: { id },
+	};
+}

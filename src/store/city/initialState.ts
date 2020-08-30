@@ -1,6 +1,10 @@
+import { GenericObject } from '../../types';
+
 export interface City {
+	id: number;
 	name: string;
 	poster?: string;
+	weather?: GenericObject<string | number>
 };
 
 export interface CityState {

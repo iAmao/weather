@@ -13,3 +13,6 @@ export type FetchCitiesActionType = GenericActionType<FetchCitiesActionPayload>;
 
 export type FetchCitiesAction = (payload: FetchCitiesActionPayload) => FetchCitiesActionType;
 export type FetchCitiesByPopulationAction = (payload: FetchCitiesByPopulationActionPayload) => FetchCitiesActionType
+export type RemoveCityAction = (id: number) => GenericActionType<{
+	id: number;
+}>

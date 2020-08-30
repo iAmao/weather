@@ -8,6 +8,7 @@ export interface ActionPayload {
 export interface ResponsePayload {
 	response?: GenericObject<any>; //;
 	message?: string;
+	[key: string]: any;
 };
 
 export interface GenericActionType<T> {

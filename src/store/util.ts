@@ -7,7 +7,7 @@ import axios, {
   AxiosResponse,
 } from 'axios';
 import { Dispatch } from 'redux';
-import { CallEffect, put } from 'redux-saga/effects';
+import { CallEffect, PutEffect, put } from 'redux-saga/effects';
 import { GenericObject } from '../types';
 import { ActionPayload, ResponsePayload } from './types';
 
@@ -17,7 +17,7 @@ export interface ReducerCase<T> {
   [key: string]: (
     draft: T,
     payload: ResponsePayload,
-    pendingPayload?: ActionPayload,
+    pendingPayload?: GenericObject<any>,
   ) => void;
 }
 
@@ -68,7 +68,7 @@ export function wrapReducer<T>(
 export function createAsyncSaga(
   successType: string,
   errorType: string,
-  req: (action: any) => CallEffect | undefined,
+  req: (action: any) => CallEffect | PutEffect<any> | undefined,
   payloadOverrides?: { success?: object; error?: object },
 ) {
   return function*(action: any) {
@@ -90,6 +90,7 @@ export function createAsyncSaga(
       // Dispatch success action with payload from response and payload from the __PENDING action
       yield put({ payload, pendingPayload, type: successType });
     } catch (e) {
+      console.error(e)
       payload.message = e.message;
       // payload.message = e.message;
 
@@ -133,21 +134,7 @@ export class CustomAxios {
     this.axiosInstance = axios.create({
       baseURL,
     });
-
-    if (setInterceptors) {
-      this.axiosInstance.interceptors.request.use(
-        (config: AxiosRequestConfig) => {
-          const AUTH_TOKEN = 'storageUtils.getAccessToken()';
-
-          if (AUTH_TOKEN) {
-            config.headers.Authorization = `Bearer ${AUTH_TOKEN}`;
-          }
-          config.headers['X-Goodlight-client'] = 'web';
-          return config;
-        },
-      );
-      // Response interceptors goes here
-    }
+    // Response interceptors goes here
   }
 
   public setHeader = (key: string, value: string) => {
@@ -221,4 +208,40 @@ export function sortResponseData(
     return 0;
   });
   return list;
+}
+
+/**
+ * @class AsyncList
+ * @description Wrapper around a custom array implementation.
+ * The main purpose for this is to allow asynchronous loops, adn
+ * to set the min timeout value before the next iteration is called.
+ */
+export class AsyncList {
+  private debounce: number;
+  private args: any[];
+  public length: number;
+
+  constructor(args: any[], debounce = 250) {
+    this.debounce = debounce;
+    this.args = args || [];
+    this.length = args.length;
+  }
+
+  public async *[Symbol.asyncIterator]() {
+    let step = 0;
+    while (step < this.length) {
+      let timeout = 0;
+      yield new Promise(resolve => {
+        timeout = setTimeout(
+          () => resolve(this.args[step++]),
+          step === 0 ? 0 : this.debounce,
+        );
+        return timeout;
+      });
+
+      clearTimeout(timeout);
+    }
+
+    return this.args;
+  }
 }
