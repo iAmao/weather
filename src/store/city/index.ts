@@ -1,5 +1,6 @@
 import addDays from 'date-fns/addDays';
-import getTime from 'date-fns/getTime'
+import getTime from 'date-fns/getTime';
+import addHours from 'date-fns/addHours';
 import actionTypes from './actionTypes';
 import weatherActionTypes from '../weather/actionTypes';
 import initialCityState, { CityState, City } from './initialState';
@@ -42,6 +43,29 @@ const cityReducer = wrapReducer<CityState>(
         }
       }
     },
+    [weatherActionTypes.UPDATE_CURRENT_CITY_WEATHER__SUCCESS]: (
+      draft,
+      { response }
+    ) => {
+      if (response && response.current) {
+        draft.current = response;
+        draft.current.expiresAt = getTime(addHours(new Date(), 1));
+      }
+    },
+    [weatherActionTypes.FETCH_CITY_POSTER__SUCCESS]: (
+      draft,
+      { response },
+      pendingPayload,
+    ) => {
+      if ((pendingPayload && pendingPayload.isCurrent) &&
+          (response && response.hits && draft.current)
+      ) {
+        const [result] = response.hits;
+        draft.current.poster = result
+          ? result.imageURL || result.webformatURL
+          : null;
+      }
+    }
   },
   initialCityState,
 );

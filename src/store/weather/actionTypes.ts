@@ -10,6 +10,7 @@ const asyncActionTypes = createActionTypes([
 	'REMOVE_NOTE_FROM_WEATHER',
 	'UPDATE_CITY_WEATHER_POSTER',
 	'FETCH_CITY_POSTER',
+	'UPDATE_CURRENT_CITY_WEATHER',
 ], true);
 
 export default {

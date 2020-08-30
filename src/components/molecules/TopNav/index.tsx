@@ -23,10 +23,11 @@ const TopNav: React.FC<TopNavProps> = (props) => {
 
 	return (
 		<TopNavContainer>
-			<div />
 			<div>
-				<input value={value} onChange={handleChange} placeholder="Search..." />
-				<Button variant="primary" onClick={handleSearch}>Search</Button>
+				<div>
+					<input value={value} onChange={handleChange} placeholder="Search..." />
+					<Button variant="primary" onClick={handleSearch}>Search</Button>
+				</div>
 			</div>
 		</TopNavContainer>
 	);

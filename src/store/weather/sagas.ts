@@ -2,6 +2,7 @@ import { all, call, takeEvery, put } from 'redux-saga/effects';
 import getTime from 'date-fns/getTime'
 import queryString from 'query-string';
 import actionTypes from './actionTypes';
+import cityActionTypes from '../city/actionTypes';
 import { CustomAxios, createAsyncSaga } from '../util';
 import { GenericObject } from '../../types';
 
@@ -121,6 +122,44 @@ export function* fetchCityPosterSaga() {
   );
 }
 
+export function* fetchCurrentCityWeatherSaga() {
+  const Api = new CustomAxios('http://api.weatherstack.com/');
+  const asyncSaga = createAsyncSaga(
+    actionTypes.UPDATE_CURRENT_CITY_WEATHER__SUCCESS,
+    actionTypes.UPDATE_CURRENT_CITY_WEATHER__FAILED,
+    ({ payload }) => {
+      const { response } = payload;
+      if (response && response.data) {
+        const query: GenericObject<string> = {
+          access_key: process.env.REACT_APP__WEATHER_API || '',
+          query: response.data[0].label,
+        };
+        const uri = `/current?${queryString.stringify(query)}`;
+        return call(Api.get, uri);
+      }
+      return;
+    },
+  );
+  yield takeEvery(
+    cityActionTypes.FETCH_CITY_FROM_COORD__SUCCESS,
+    asyncSaga,
+  );
+}
+
+export function* fetchCurrentCityPosterSaga() {
+  yield takeEvery(actionTypes.UPDATE_CURRENT_CITY_WEATHER__SUCCESS, function* ({ payload }: any) {
+    if (payload.response && payload.response.location) {
+      yield put({
+        type: actionTypes.FETCH_CITY_POSTER__PENDING,
+        payload: {
+          isCurrent: true,
+          query: `${payload.response.location.region}, ${payload.response.location.country}, city`,
+        }
+      });
+    }
+  });
+}
+
 export default function* citySagas() {
   yield all([
     fetchMultiplWeather(),
@@ -129,5 +168,7 @@ export default function* citySagas() {
     addWeatherToFavoritesSaga(),
     updateCityWeatherPoster(),
     fetchCityPosterSaga(),
+    fetchCurrentCityWeatherSaga(),
+    fetchCurrentCityPosterSaga(),
   ]);
 };

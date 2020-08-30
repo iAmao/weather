@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const PageLayoutContainer = styled.div`
 	display: flex;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
 `;
 
 export const MainContentContainer = styled.div`

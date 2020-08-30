@@ -16,6 +16,7 @@ import CityPage from '../pages/city';
 // Components
 import TopNav from '../components/molecules/TopNav';
 import SideNav from '../components/molecules/SideNav';
+import RightNav from '../components/molecules/RightNav';
 
 const Routes = () => {
 	return (
@@ -33,6 +34,7 @@ const Routes = () => {
 						</Switch>
 					</MainContentContainer>
 				</div>
+				<RightNav />
 			</PageLayoutContainer>
 		</Router>
 	);

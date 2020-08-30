@@ -43,9 +43,29 @@ export function* dispatchBulkCityWeatherSaga() {
   });
 }
 
+export function* fetchCityByCoordinates() {
+  const Api = new CustomAxios('http://api.positionstack.com/v1');
+  const asyncSaga = createAsyncSaga(
+    actionTypes.FETCH_CITY_FROM_COORD__SUCCESS,
+    actionTypes.FETCH_CITY_FROM_COORD__FAILED,
+    action => {
+      const { position: { latitude, longitude } } = action.payload;
+      const query = {
+        access_key: process.env.REACT_APP__COORD_API || '',
+      };
+      const pos = `query=${latitude.toPrecision(6)},${longitude.toPrecision(6)}`;
+      const uri = `/reverse?${queryString.stringify(query)}&${pos}`;
+      return call(Api.get, uri);
+    }
+  );
+
+  yield takeEvery(actionTypes.FETCH_CITY_FROM_COORD__PENDING, asyncSaga);
+}
+
 export default function* citySagas() {
   yield all([
   	fetchCitiesSaga(),
     dispatchBulkCityWeatherSaga(),
+    fetchCityByCoordinates(),
   ]);
 };

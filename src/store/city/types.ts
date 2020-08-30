@@ -1,4 +1,5 @@
 import { GenericActionType } from '../types';
+import { CoordinatePosition } from '../../types';
 
 export interface FetchCitiesByPopulationActionPayload {
 	limit?: number;
@@ -15,4 +16,7 @@ export type FetchCitiesAction = (payload: FetchCitiesActionPayload) => FetchCiti
 export type FetchCitiesByPopulationAction = (payload: FetchCitiesByPopulationActionPayload) => FetchCitiesActionType
 export type RemoveCityAction = (id: number) => GenericActionType<{
 	id: number;
+}>
+export type FindMyCityByCoordsAction = (payload: CoordinatePosition) => GenericActionType<{
+	position: CoordinatePosition;
 }>

@@ -57,13 +57,14 @@ const weatherReducer = wrapReducer<WeatherState>(
       { response },
       pendingPayload,
     ) => {
-      console.log(response)
       if (pendingPayload && response && response.hits) {
         const { key } = pendingPayload;
         const [result] = response.hits;
-        draft.weather[key].poster = result
-          ? result.imageURL || result.webformatURL
-          : null;
+        if (draft.weather[key]) {
+          draft.weather[key].poster = result
+            ? result.imageURL || result.webformatURL
+            : null;
+        }
       }
     }
   },
